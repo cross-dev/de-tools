@@ -1,0 +1,22 @@
+#!/usr/bin/env perl
+
+use warnings;
+use strict;
+use feature 'say';
+
+my $re = shift || '.*';
+$re = qr/$re/;
+
+sub transform_env_variable {
+    my $key = shift;
+    my $value = shift;
+    if ($value eq 'y') {
+        return "#define $key"
+    } else {
+        return "#define $key $value"
+    }
+}
+
+foreach (keys %ENV) {
+    say transform_env_variable($_, $ENV{$_}) if $_ =~ $re;
+}
